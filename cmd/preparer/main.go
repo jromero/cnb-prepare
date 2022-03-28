@@ -1,9 +1,7 @@
 package main
 
-import (	
-	"github.com/jromero/preparer/cmd"
-)
+import "github.com/jromero/cnb-prepare/cmd/preparer/commands"
 
 func main() {
-    cmd.Execute()
+	commands.Execute()
 }

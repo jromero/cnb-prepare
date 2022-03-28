@@ -1,4 +1,4 @@
-# preparer
+# CNB Prepare
 
 Common prepare operations for Cloud Native Buildpacks.
 
