@@ -2,6 +2,7 @@ package preparer
 
 import (
 	"encoding/json"
+	"io/ioutil"
 	"os"
 	"path/filepath"
 
@@ -29,15 +30,35 @@ func Preparer(opts ...Option) error {
 	}
 
 	if descriptor != nil {
-		processDescriptor(options.logger, *descriptor)
+		err = processDescriptor(*options, *descriptor)
+		if err != nil {
+			return err
+		}
 	}
 
 	return nil
 }
 
-func processDescriptor(logger Logger, descriptor types.Descriptor) {
-	logger.Debug("Found descriptor:\n %s", prettyPrint(descriptor))
-	// TODO: https://github.com/jromero/cnb-prepare/issues/4
+func processDescriptor(options Options, descriptor types.Descriptor) error {
+	options.logger.Debug("Found descriptor:\n %s", prettyPrint(descriptor))
+
+	options.logger.Debug("Creating environment variable files...")
+	platformEnvDir := filepath.Join(options.platformDir, "env")
+	err := os.MkdirAll(platformEnvDir, os.ModePerm)
+	if err != nil {
+		return err
+	}
+
+	for _, env := range descriptor.Build.Env {
+		envFilePath := filepath.Join(platformEnvDir, env.Name)
+		options.logger.Debug("Creating environment variable file: %s", envFilePath)
+		err := ioutil.WriteFile(envFilePath, []byte(env.Value), os.ModePerm)
+		if err != nil {
+			return errors.Wrapf(err, "creating env file for variable '%s'", env.Name)
+		}
+	}
+
+	return nil
 }
 
 func prettyPrint(i interface{}) string {

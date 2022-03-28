@@ -3,8 +3,9 @@ package preparer
 import "os"
 
 type Options struct {
-	logger    Logger
-	sourceDir string
+	logger      Logger
+	sourceDir   string
+	platformDir string
 }
 
 type Option func(opts *Options)
@@ -19,6 +20,7 @@ func WithLogger(logger Logger) func(*Options) {
 // ReadEnvOptions reads options from env vars
 func ReadEnvOptions(o *Options) {
 	o.sourceDir = getEnvOrDefault("CNB_APP_DIR", "/workspace")
+	o.platformDir = getEnvOrDefault("CNB_PLATFORM_DIR", "/platform")
 }
 
 // WithEnvOptions loads options from env vars

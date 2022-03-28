@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+set -eo pipefail
+
+# 1. GET ARGS
+plan_path=$2
+
+# 2. DECLARE DEPENDENCIES (OPTIONAL)
+cat >> "${plan_path}" <<EOL
+# Buildpack requires this dependency
+#
+# NOTE: Everything aside from 'name' is simply additional information that the providing buildpack can use to resolve
+#       the dependency.
+#
+[[requires]]
+name = "some-world"
+version = "0.1"     # Optional
+
+[requires.metadata]
+world = "Earth-616" # Optional
+EOL
