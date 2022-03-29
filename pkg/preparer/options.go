@@ -6,6 +6,7 @@ type Options struct {
 	logger      Logger
 	sourceDir   string
 	platformDir string
+	orderPath   string
 }
 
 type Option func(opts *Options)
@@ -21,6 +22,7 @@ func WithLogger(logger Logger) func(*Options) {
 func ReadEnvOptions(o *Options) {
 	o.sourceDir = getEnvOrDefault("CNB_APP_DIR", "/workspace")
 	o.platformDir = getEnvOrDefault("CNB_PLATFORM_DIR", "/platform")
+	o.orderPath = getEnvOrDefault("CNB_ORDER_PATH", "/cnb/order.toml")
 }
 
 // WithEnvOptions loads options from env vars

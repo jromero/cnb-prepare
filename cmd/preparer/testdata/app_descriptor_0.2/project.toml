@@ -26,16 +26,14 @@ name = "JAVA_OPTS"
 value = "-Xmx1g"
 
 [[io.buildpacks.group]]
-id = "io.buildpacks/java"
-version = "1.0"
+id = "hello-world"
+version = "0.0.1"
 
 [[io.buildpacks.group]]
-id = "io.buildpacks/nodejs"
-version = "1.0"
-
-[[io.buildpacks.group]]
-id = "example/post-build"
+id = "hello-comet"
   
     [io.buildpacks.group.script]
     api = "0.5"
-    inline = "./post-build.sh"
+    inline = """
+    echo "Comet!"
+    """

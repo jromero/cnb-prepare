@@ -6,6 +6,8 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/BurntSushi/toml"
+	"github.com/jromero/cnb-prepare/pkg/order"
 	"github.com/jromero/cnb-prepare/pkg/project"
 	"github.com/jromero/cnb-prepare/pkg/project/types"
 	"github.com/pkg/errors"
@@ -55,6 +57,32 @@ func processDescriptor(options Options, descriptor types.Descriptor) error {
 		err := ioutil.WriteFile(envFilePath, []byte(env.Value), os.ModePerm)
 		if err != nil {
 			return errors.Wrapf(err, "creating env file for variable '%s'", env.Name)
+		}
+	}
+
+	if len(descriptor.Build.Buildpacks) > 0 {
+		options.logger.Info("Buildpacks specified, overwriting order.toml")
+		group := order.Group{}
+		for _, b := range descriptor.Build.Buildpacks {
+			group.Buildpacks = append(group.Buildpacks, order.BuildpackEntry{
+				ID:       b.ID,
+				Version:  b.Version,
+				Optional: false,
+			})
+		}
+
+		file, err := os.Create(options.orderPath)
+		if err != nil {
+			return err
+		}
+		defer file.Close()
+
+		options.logger.Info("Writing order.toml to: %s", options.orderPath)
+		err = toml.NewEncoder(file).Encode(&order.Order{
+			Groups: []order.Group{group},
+		})
+		if err != nil {
+			return err
 		}
 	}
 
