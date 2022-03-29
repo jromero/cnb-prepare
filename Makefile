@@ -22,7 +22,7 @@ help:
 build:
 	@echo "building ${BIN_NAME} ${VERSION}"
 	@echo "GOPATH=${GOPATH}"
-	go build -ldflags "-X github.com/jromero/preparer/version.GitCommit=${GIT_COMMIT}${GIT_DIRTY} -X github.com/jromero/preparer/version.BuildDate=${BUILD_DATE}" -o bin/${BIN_NAME}
+	go build -ldflags "-X github.com/jromero/cnb-prepare/pkg/version.GitCommit=${GIT_COMMIT}${GIT_DIRTY} -X github.com/jromero/cnb-prepare/pkg/version.BuildDate=${BUILD_DATE}" -o bin/${BIN_NAME} cmd/preparer/preparer.go
 
 .PHONY: clean
 clean:
