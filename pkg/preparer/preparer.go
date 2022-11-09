@@ -64,9 +64,18 @@ func processDescriptor(options Options, descriptor types.Descriptor) error {
 		options.logger.Info("Buildpacks specified, overwriting order.toml")
 		group := order.Group{}
 		for _, b := range descriptor.Build.Buildpacks {
+			var script *types.Script
+			if b.Script.API == "" && b.Script.Inline == "" && b.Script.Shell == "" {
+				script = nil
+			} else {
+				script_one := b.Script
+				script = &script_one
+			}
+
 			group.Buildpacks = append(group.Buildpacks, order.BuildpackEntry{
 				ID:       b.ID,
 				Version:  b.Version,
+				Script:   script,
 				Optional: false,
 			})
 		}
