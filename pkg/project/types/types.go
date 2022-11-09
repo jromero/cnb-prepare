@@ -1,9 +1,9 @@
 package types
 
 type Script struct {
-	API    string `toml:"api"`
-	Inline string `toml:"inline"`
-	Shell  string `toml:"shell"`
+	API    string `toml:"api,omitempty"`
+	Inline string `toml:"inline,omitempty"`
+	Shell  string `toml:"shell,omitempty"`
 }
 
 type Buildpack struct {

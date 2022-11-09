@@ -104,5 +104,8 @@ func Test_UpdateOrderToml(t *testing.T) {
 
   [[order.group]]
     id = "hello-comet"
+    [order.group.script]
+      api = "0.5"
+      inline = "    echo \"Comet!\"\n    "
 `))
 }
